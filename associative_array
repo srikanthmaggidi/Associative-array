@@ -1,0 +1,40 @@
+/**
+		@author Srikanth Maggidi
+		@method associate_array 
+		@access public
+		@params mixed $multi_dimensional_array_object, $array_key, $array_value
+		@use array_key empty or null keys will be default 
+		@use array_column function if PHP version is > = 5.5 else use array_map function
+		@return mixed Object
+**/		
+	
+	public function associate_array($multi_dimensional_array_object, $array_key, $array_value) {
+	$associate_array=array();
+		if(!empty($multi_dimensional_array_object))
+		foreach($multi_dimensional_array_object as $array) {
+			if(is_object($array))
+				if(!empty($array->$array_key))   // if example array is multidimensional  array then use '->' to ['index_name']
+    //example $array->$array_key to $array['array_key']
+					$associate_array[$array->$array_key]=$array->$array_value;
+				else
+					$associate_array[]=$array->$array_value;
+		}
+		return $associate_array;		
+	}
+
+/**	
+     @author Srikanth Maggidi
+		@method associate_array_map 
+		@access public
+		@params mixed $multi_dimensional_array_object, $array_key, $array_value
+		@use array_key empty or null keys will be default 
+		@use array_column function if PHP version is > = 5.5 else use array_map function
+		@return mixed Object
+**/	
+	
+		public function associate_array_map($multi_dimensional_array_object, $array_key, $array_value) {
+			global $global_value;
+			$global_value=$array_value;
+			$associate_array=array_map(function($array) { if(is_object($array)) return $array->$GLOBALS['global_value'];},$multi_dimensional_array_object); // only for defalut key array values not for associate
+			return $associate_array;		
+			}
